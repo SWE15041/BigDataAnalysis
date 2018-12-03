@@ -1,12 +1,13 @@
 package com.bigdata.controller;
 
 import com.bigdata.config.LogFileParser;
+import com.bigdata.constant.Status;
 import com.bigdata.core.MainDataAnalysis;
+import com.bigdata.service.DataService;
 import net.sf.json.JSONObject;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import javax.xml.ws.http.HTTPException;
@@ -16,8 +17,10 @@ import javax.xml.ws.http.HTTPException;
 public class DataController {
 
 
-//    @Autowired
+    //    @Autowired
 //    private AsyncTaskService asyncTaskService;
+    @Autowired
+    private DataService dataService;
 
     @RequestMapping(value = "/data/analysis/{type}", method = RequestMethod.GET)
     public JSONObject analysis(@PathVariable int type) {
@@ -35,12 +38,12 @@ public class DataController {
 
     }
 
-    @PostConstruct
-    public void init() {
-
-        new Thread(new LogFileParser()).start();
-
-    }
+//    @PostConstruct
+//    public void init() {
+//
+//        new Thread(new LogFileParser()).start();
+//
+//    }
 
     @RequestMapping(value = "/server/cpuInfo", method = RequestMethod.GET)
     public JSONObject getCPUinfo() {
@@ -52,5 +55,15 @@ public class DataController {
         }
         return systemInfo;
     }
+
+
+    @RequestMapping(value = "/uploadtextfile", method = RequestMethod.POST)
+    public Status uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile) {
+
+        //todo 上传文件
+        dataService.uploadFile(multipartFile);
+        return Status.SUCCESS;
+    }
+
 
 }
