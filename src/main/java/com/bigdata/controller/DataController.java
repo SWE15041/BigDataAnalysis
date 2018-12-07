@@ -1,6 +1,5 @@
 package com.bigdata.controller;
 
-import com.bigdata.config.LogFileParser;
 import com.bigdata.constant.Status;
 import com.bigdata.core.MainDataAnalysis;
 import com.bigdata.service.DataService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import javax.xml.ws.http.HTTPException;
 
 @RestController
@@ -60,6 +58,9 @@ public class DataController {
     @RequestMapping(value = "/uploadtextfile", method = RequestMethod.POST)
     public Status uploadFile(@RequestParam("uploadfile") MultipartFile multipartFile) {
 
+        if (multipartFile.isEmpty()) {
+            throw new HTTPException(400);
+        }
         //todo 上传文件
         dataService.uploadFile(multipartFile);
         return Status.SUCCESS;
