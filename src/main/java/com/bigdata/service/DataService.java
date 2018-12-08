@@ -6,4 +6,5 @@ public interface DataService {
 
     boolean uploadFile(MultipartFile multipartFile);
 
+    boolean uploadFileToMongoDB(MultipartFile multipartFile);
 }
